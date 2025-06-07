@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đếm Ngược Đến Ngày Thi - Bích Nghi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to top right, #fff1f2, #e1f5fe);
+      text-align: center;
+      padding: 3rem;
+      color: #4e342e;
+    }
+    h1 {
+      color: #d81b60;
+      font-size: 2.2rem;
+    }
+    #countdown {
+      font-size: 2rem;
+      margin: 2rem 0;
+      color: #1a237e;
+    }
+    .motivation {
+      font-size: 1.3rem;
+      margin: 1rem auto;
+      padding: 1rem;
+      border-radius: 10px;
+      background: #fce4ec;
+      color: #880e4f;
+      max-width: 600px;
+    }
+    .reminder {
+      margin-top: 1rem;
+      font-style: italic;
+      color: #555;
+    }
+    .quote-img {
+      margin-top: 2rem;
+      max-width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .confetti {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <h1>⏳ Đếm Ngược Đến Ngày Thi Bích Nghi</h1>
+  <div id="countdown">Đang tải...</div>
+  <div class="motivation" id="motivation">💬 Mỗi ngày là một bước tiến gần hơn đến thành công!</div>
+  <div class="reminder">🕊️ Nhớ ghé mỗi ngày nhé Bích Nghi – luôn có lời chúc mới chờ bạn 💖</div>
+  <img id="quoteImg" class="quote-img" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDYwdDYzZ21na2Fuc2k5MHJpajFzdTlqcWpmeXZ2bTZjeGFweXlkdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ndAvMC5LFPNMCzq7m/giphy.gif" alt="Nhãn dán động lực" />
+
+  <canvas class="confetti" id="confetti-canvas"></canvas>
+  <div style="margin-top: 1rem;">
+    <label><input type="checkbox" id="studyCheck"> ✅ Hôm nay mình đã học bài</label>
+  </div>
+  <audio id="thunder" preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/04/audio_a8e45d3f67.mp3?filename=thunderstorm-with-rain-and-thunder-21779.mp3" type="audio/mpeg">
+  </audio>
+  <script>
+    setTimeout(() => {
+      const checked = document.getElementById("studyCheck").checked;
+      if (!checked) {
+        document.body.style.background = "radial-gradient(#000000, #3e3e3e)";
+        document.querySelector("h1").textContent = "⚡ Có người chưa học bài đó nha!";
+        document.getElementById("thunder").play();
+        motivationEl.textContent = "Học lẹ đi còn kịp Bích Nghi ơi!";
+        quoteImg.style.display = "none";
+        document.getElementById("countdown").style.color = "#fff";
+      }
+    }, 15000);
+  </script>
+  <audio autoplay loop volume="0.5">
+    <source src="https://cdn.pixabay.com/download/audio/2023/03/16/audio_c5091fe88c.mp3?filename=gentle-melody-14285.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const endDate = new Date("2025-06-26T00:00:00").getTime();
+    const countdownEl = document.getElementById("countdown");
+    const motivationEl = document.getElementById("motivation");
+    const quoteImg = document.getElementById("quoteImg");
+
+    const quotes = {
+      0: "💖 Bích Nghi cố lên! Ngày thi đang đến gần rồi!",
+      1: "🌟 Mỗi nỗ lực hôm nay là tương lai rực rỡ ngày mai!",
+      2: "📖 Kiến thức là hành trang – cố lên bạn ơi!",
+      3: "💪 Đừng sợ thất bại, sợ không dám thử!",
+      4: "🔥 Bạn giỏi hơn bạn nghĩ rất nhiều!",
+      5: "🎯 Đặt mục tiêu – và tiến về phía trước!",
+      6: "🎵 Học cũng có thể chill – giữ tinh thần vui vẻ!"
+    };
+
+    const images = {
+      0: "https://i.imgur.com/3RzOqDb.jpg",
+      1: "https://i.imgur.com/YOUZ1Dn.jpg",
+      2: "https://i.imgur.com/q9qCKDp.jpg",
+      3: "https://i.imgur.com/H9OlUSn.jpg",
+      4: "https://i.imgur.com/3YOJ8C9.jpg",
+      5: "https://i.imgur.com/o1gKnMB.jpg",
+      6: "https://i.imgur.com/nN9n0n8.jpg"
+    };
+
+    const today = new Date();
+    const quoteKey = today.getDay();
+    motivationEl.textContent = quotes[quoteKey];
+    const unsplashKeywords = {
+      0: "cute",
+      1: "study-motivation",
+      2: "student-desk",
+      3: "sunlight-desk",
+      4: "notebook",
+      5: "graduation",
+      6: "cozy-study"
+    };
+    quoteImg.src = "https://i.imgur.com/KOoJw9F.png";
+
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = endDate - now;
+
+      if (distance <= 0) {
+        clearInterval(timer);
+        countdownEl.textContent = "🎉 Đến ngày thi rồi – Bích Nghi cố gắng nhé!";
+        motivationEl.textContent = "Chúc bạn thi thật tốt và đạt kết quả tuyệt vời!";
+        startConfetti();
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownEl.textContent = `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
+    }, 1000);
+
+    function startConfetti() {
+      const confettiSettings = { target: 'confetti-canvas' };
+      const confetti = new ConfettiGenerator(confettiSettings);
+      confetti.render();
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+</body>
+</html>

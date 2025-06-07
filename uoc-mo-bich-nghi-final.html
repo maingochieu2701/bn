@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Ước Mơ Đại Học Của Bích Nghi (FINAL)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(120deg, #f6d365, #fda085);
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+      transition: background 1s;
+    }
+    h1 {
+      color: #d84315;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+    input {
+      width: 200px;
+    }
+    button {
+      background-color: #ff7043;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e64a19;
+    }
+    #result {
+      margin-top: 2rem;
+      font-size: 1.3rem;
+      color: #2e7d32;
+    }
+    #history {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #fff3e0;
+      border-radius: 8px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    canvas {
+      position: fixed;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎓 Ước Mơ Đại Học Của Bích Nghi</h1>
+
+  <p>Hãy nhập điểm bạn dự đoán nhé!</p>
+  <input type="number" id="toan" placeholder="Toán" min="0" max="10" step="0.1">
+  <input type="number" id="van" placeholder="Văn" min="0" max="10" step="0.1">
+  <input type="number" id="su" placeholder="Sử" min="0" max="10" step="0.1">
+  <input type="number" id="dia" placeholder="Địa" min="0" max="10" step="0.1">
+  <br>
+  <input type="text" id="school" placeholder="Nguyện vọng: Tên trường đại học yêu thích">
+  <br>
+  <button onclick="tinhDiem()">🎯 Xem kết quả</button>
+
+  <div id="result"></div>
+  <div id="history"></div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <audio id="sound-pass">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bbf13bd2a3.mp3?filename=success-1-6297.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="sound-fail">
+    <source src="https://cdn.pixabay.com/download/audio/2021/10/30/audio_8f7e4c582f.mp3?filename=sad-trombone-6347.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    emailjs.init("ywHW_dhfEIxzNVl7d"); // PUBLIC_KEY
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtSrKc8OU64o6DP0GjqdFZ3kns-McKKTs",
+      authDomain: "du-doan-bichnghi.firebaseapp.com",
+      projectId: "du-doan-bichnghi",
+      storageBucket: "du-doan-bichnghi.firebasestorage.app",
+      messagingSenderId: "480546932922",
+      appId: "1:480546932922:web:30ae5a9f389eceb3d05a83"
+    };
+
+    const diemChuanAo = {
+      "đại học ngoại thương": 36,
+      "kinh tế quốc dân": 34,
+      "bách khoa": 33,
+      "y hà nội": 36.5,
+      "sư phạm hà nội": 30,
+      "học viện báo chí": 31,
+      "fpt": 28,
+      "văn lang": 26,
+      "quốc tế": 25
+    };
+
+    const soundPass = document.getElementById('sound-pass');
+    const soundFail = document.getElementById('sound-fail');
+    const confettiCanvas = document.getElementById("confetti-canvas");
+
+    async function tinhDiem() {
+      const toan = parseFloat(document.getElementById("toan").value) || 0;
+      const van = parseFloat(document.getElementById("van").value) || 0;
+      const su = parseFloat(document.getElementById("su").value) || 0;
+      const dia = parseFloat(document.getElementById("dia").value) || 0;
+      const truong = document.getElementById("school").value.trim().toLowerCase();
+
+      const tong = (toan + van + su + dia).toFixed(1);
+      const diemChuan = diemChuanAo[truong] || 32;
+      const ketqua = tong >= diemChuan ? "✅ Đủ điểm đậu" : "❌ Chưa đủ điểm";
+
+      let msg = `📊 Tổng điểm của bạn: ${tong}/40<br>`;
+      msg += `🎯 Nguyện vọng: ${truong.toUpperCase()} (Điểm chuẩn ước lượng: ${diemChuan})<br>`;
+      msg += ketqua;
+
+      if (tong >= diemChuan) {
+        document.body.style.background = "linear-gradient(to right, #b2ff59, #69f0ae)";
+        soundPass.play();
+        confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+      } else {
+        document.body.style.background = "linear-gradient(to right, #ffcdd2, #f8bbd0)";
+        soundFail.play();
+      }
+
+      document.getElementById("result").innerHTML = msg;
+
+      const log = {
+        toan, van, su, dia, truong, tong, diemChuan, ketqua, time: new Date().toLocaleString()
+      };
+
+      localStorage.setItem("bichnghi_uocmo", JSON.stringify(log));
+      showHistory();
+
+      // Gửi email
+      emailjs.send("service_cq7infc", "template_opx76n7", log)
+        .then(() => console.log("📩 Đã gửi email thành công!"))
+        .catch((err) => console.error("❌ Lỗi gửi email:", err));
+    }
+
+    function showHistory() {
+      const data = JSON.parse(localStorage.getItem("bichnghi_uocmo"));
+      if (!data) return;
+      const box = document.getElementById("history");
+      box.innerHTML = `<h3>📖 Kết quả lần trước:</h3>
+        <p>Toán: ${data.toan}, Văn: ${data.van}, Sử: ${data.su}, Địa: ${data.dia}</p>
+        <p>Nguyện vọng: ${data.truong.toUpperCase()}</p>
+        <p>Tổng: ${data.tong} | Điểm chuẩn: ${data.diemChuan}</p>
+        <p>Kết luận: ${data.ketqua} | Lúc: ${data.time}</p>`;
+    }
+
+    showHistory();
+  </script>
+</body>
+</html>

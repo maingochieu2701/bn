@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Phong Bì May Mắn - Chúc Thi Tốt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to top right, #fff1eb, #ace0f9);
+      text-align: center;
+      padding: 2rem;
+      color: #333;
+    }
+    h1 {
+      color: #e91e63;
+      margin-bottom: 1rem;
+    }
+    .envelope {
+      width: 180px;
+      height: 120px;
+      background: #f06292;
+      margin: 2rem auto;
+      border-radius: 10px;
+      position: relative;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .envelope:hover {
+      transform: scale(1.05);
+    }
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 0;
+      height: 0;
+      border-left: 90px solid transparent;
+      border-right: 90px solid transparent;
+      border-bottom: 60px solid #ec407a;
+      border-radius: 10px 10px 0 0;
+    }
+    #message {
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      background: #ffffffaa;
+      display: inline-block;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      max-width: 500px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .note {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>📮 Phong Bì May Mắn</h1>
+  <p>Click vào phong bì để nhận một lời chúc thi tốt 💌</p>
+  <div class="envelope" onclick="openEnvelope()"></div>
+  <div id="message"></div>
+  <p class="note"><a href="index.html">← Quay lại</a></p>
+
+  <script>
+    const messages = [
+      "Chúc Bích Nghi thi như thần – đề ra đâu trúng đó! 🎯",
+      "Bạn không chỉ giỏi, mà còn cực kỳ kiên cường! ✨",
+      "Thi cử chỉ là thử thách nhỏ – bạn vượt qua dễ dàng thôi!",
+      "Hít thật sâu, mỉm cười – bạn đã sẵn sàng rồi đấy 💖",
+      "Tự tin lên nhé, tụi mình luôn tin ở bạn!",
+      "Hôm nay chăm chỉ – ngày mai rạng rỡ 🎓",
+      "Chúc Bích Nghi ngủ ngon, mơ đề dễ, làm bài siêu 💤",
+      "Bạn là tia sáng nhỏ bé nhưng rực rỡ nhất mùa thi này!",
+      "Không có áp lực nào lớn hơn trái tim muốn cố gắng! ❤️",
+      "Điểm cao chỉ là con số – bạn mới là điều tuyệt vời nhất!"
+    ];
+
+    function openEnvelope() {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById("message").textContent = msg;
+    }
+  </script>
+</body>
+</html>

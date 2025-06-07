@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sổ Lưu Bút Viền Hoa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      background-image: repeating-linear-gradient(
+        to bottom,
+        #fff,
+        #fff 28px,
+        #d0e7ff 29px
+      );
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+      color: #4e342e;
+      text-align: center;
+      background-color: #fff0f5;
+      border: 20px solid transparent;
+      border-image: url('https://i.imgur.com/K44qrsK.png') 30 round;
+    }
+    h1 {
+      color: #c2185b;
+      margin-bottom: 1rem;
+    }
+    textarea, input {
+      width: 90%;
+      max-width: 500px;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      background-color: rgba(255,255,255,0.95);
+    }
+    button {
+      padding: 10px 18px;
+      font-size: 1rem;
+      background: #f06292;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .entry {
+      background: rgba(255,255,255,0.95);
+      border-left: 5px solid #ec407a;
+      padding: 1rem;
+      margin: 1rem auto;
+      border-radius: 8px;
+      max-width: 600px;
+      text-align: left;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .entry .name {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #d81b60;
+    }
+    .entry .message {
+      margin-top: 6px;
+      white-space: pre-wrap;
+    }
+    .entry .signature {
+      margin-top: 8px;
+      font-family: 'Brush Script MT', cursive;
+      font-size: 1.2rem;
+      text-align: right;
+      color: #5d4037;
+    }
+  </style>
+</head>
+<body>
+  <h1>📖 Sổ Lưu Bút Dành Cho Bích Nghi 🌸</h1>
+  <p>Viết vài dòng thật tâm, ký tên và lưu lại kỷ niệm nhé! 💖</p>
+
+  <input id="name" placeholder="Tên bạn" />
+  <textarea id="message" rows="4" placeholder="Lời chúc gửi Bích Nghi..."></textarea>
+  <input id="signature" placeholder="Chữ ký (tuỳ chọn)" />
+  <br>
+  <button onclick="addEntry()">📩 Gửi lời chúc</button>
+
+  <div id="entries"></div>
+
+  <script>
+    const entriesDiv = document.getElementById("entries");
+
+    function addEntry() {
+      const name = document.getElementById("name").value.trim();
+      const msg = document.getElementById("message").value.trim();
+      const sign = document.getElementById("signature").value.trim();
+
+      if (!name || !msg) {
+        alert("Hãy nhập tên và lời chúc trước khi gửi nhé!");
+        return;
+      }
+
+      const entry = {
+        name,
+        msg,
+        sign,
+        time: new Date().toLocaleString()
+      };
+
+      const list = JSON.parse(localStorage.getItem("guestbookFlower") || "[]");
+      list.push(entry);
+      localStorage.setItem("guestbookFlower", JSON.stringify(list));
+      renderEntries();
+      document.getElementById("name").value = "";
+      document.getElementById("message").value = "";
+      document.getElementById("signature").value = "";
+    }
+
+    function renderEntries() {
+      const list = JSON.parse(localStorage.getItem("guestbookFlower") || "[]").reverse();
+      entriesDiv.innerHTML = list.map(e => `
+        <div class="entry">
+          <div class="name">👤 ${e.name} <span style="float:right;font-size:0.8rem;">${e.time}</span></div>
+          <div class="message">${e.msg}</div>
+          ${e.sign ? `<div class="signature">~ ${e.sign}</div>` : ""}
+        </div>
+      `).join("");
+    }
+
+    renderEntries();
+  </script>
+
+  <audio id="sound" preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bbf13bd2a3.mp3?filename=success-1-6297.mp3" type="audio/mpeg">
+  </audio>
+  <script>
+    const sound = document.getElementById("sound");
+    function addEntry() {
+      const name = document.getElementById("name").value.trim();
+      const msg = document.getElementById("message").value.trim();
+      const sign = document.getElementById("signature").value.trim();
+      if (!name || !msg) {
+        alert("Hãy nhập tên và lời chúc trước khi gửi nhé!");
+        return;
+      }
+      const entry = {
+        name,
+        msg,
+        sign,
+        time: new Date().toLocaleString()
+      };
+      const list = JSON.parse(localStorage.getItem("guestbookFlower") || "[]");
+      list.push(entry);
+      localStorage.setItem("guestbookFlower", JSON.stringify(list));
+      renderEntries();
+      document.getElementById("name").value = "";
+      document.getElementById("message").value = "";
+      document.getElementById("signature").value = "";
+      sound.play();
+    }
+  </script>
+</body>
+</html>
+</html>

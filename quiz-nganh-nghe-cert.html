@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quiz: Bạn Hợp Ngành Gì?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fddb92, #d1fdff);
+      padding: 2rem;
+      color: #333;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+    }
+    .question {
+      margin-bottom: 1.5rem;
+    }
+    .question h3 {
+      margin-bottom: 0.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+    input[type="text"] {
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+      width: 100%;
+      max-width: 300px;
+    }
+    button {
+      display: block;
+      margin: 2rem auto;
+      padding: 10px 20px;
+      background: #43a047;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 Quiz: Bạn Hợp Ngành Gì?</h1>
+
+  <div style="text-align:center;">
+    <input type="text" id="nameInput" placeholder="Nhập tên của bạn để in vào chứng nhận" />
+  </div>
+
+  <form id="quizForm">
+    <div class="question">
+      <h3>1. Bạn thích dành thời gian cho việc nào nhất?</h3>
+      <label><input type="radio" name="q1" value="xa"> Viết lách, giao tiếp, đọc sách</label>
+      <label><input type="radio" name="q1" value="ky"> Lắp ráp, lập trình, công nghệ</label>
+      <label><input type="radio" name="q1" value="y"> Giúp đỡ người khác, chăm sóc</label>
+      <label><input type="radio" name="q1" value="st"> Vẽ, sáng tạo, thiết kế</label>
+    </div>
+
+    <div class="question">
+      <h3>2. Môn học bạn thấy thú vị nhất?</h3>
+      <label><input type="radio" name="q2" value="xa"> Văn, Sử, Địa</label>
+      <label><input type="radio" name="q2" value="ky"> Toán, Tin học</label>
+      <label><input type="radio" name="q2" value="y"> Sinh học</label>
+      <label><input type="radio" name="q2" value="st"> Mỹ thuật, Âm nhạc</label>
+    </div>
+
+    <div class="question">
+      <h3>3. Môi trường làm việc bạn muốn trong tương lai?</h3>
+      <label><input type="radio" name="q3" value="xa"> Giao tiếp với nhiều người</label>
+      <label><input type="radio" name="q3" value="ky"> Làm việc máy tính, ít người</label>
+      <label><input type="radio" name="q3" value="y"> Gắn bó với cộng đồng</label>
+      <label><input type="radio" name="q3" value="st"> Tự do, sáng tạo</label>
+    </div>
+
+    <div class="question">
+      <h3>4. Bạn tự nhận mình là người...</h3>
+      <label><input type="radio" name="q4" value="xa"> Dễ gần, truyền cảm hứng</label>
+      <label><input type="radio" name="q4" value="ky"> Logic, giải quyết vấn đề</label>
+      <label><input type="radio" name="q4" value="y"> Quan tâm, dịu dàng</label>
+      <label><input type="radio" name="q4" value="st"> Bay bổng, đầy ý tưởng</label>
+    </div>
+
+    <div class="question">
+      <h3>5. Bạn muốn người khác nhớ đến mình là...</h3>
+      <label><input type="radio" name="q5" value="xa"> Nói chuyện hay</label>
+      <label><input type="radio" name="q5" value="ky"> Giỏi công nghệ</label>
+      <label><input type="radio" name="q5" value="y"> Biết quan tâm</label>
+      <label><input type="radio" name="q5" value="st"> Sáng tạo, khác biệt</label>
+    </div>
+
+    <button type="button" onclick="submitQuiz()">🎓 Nhận chứng nhận ngành phù hợp</button>
+  </form>
+
+  <script>
+    function submitQuiz() {
+      const form = document.forms["quizForm"];
+      const counts = { xa: 0, ky: 0, y: 0, st: 0 };
+
+      for (let i = 1; i <= 5; i++) {
+        const answer = form["q" + i].value;
+        if (counts[answer] !== undefined) counts[answer]++;
+      }
+
+      const max = Math.max(...Object.values(counts));
+      const field = Object.keys(counts).find(key => counts[key] === max);
+
+      const result = {
+        xa: {
+          major: "🎤 XÃ HỘI",
+          school: "Học viện Báo chí, ĐH KHXH&NV, Sư phạm Hà Nội"
+        },
+        ky: {
+          major: "💻 KỸ THUẬT",
+          school: "FPT, Bách Khoa, ĐH Công nghệ"
+        },
+        y: {
+          major: "🩺 Y – SINH",
+          school: "Y Hà Nội, Dược HN, ĐHQG Sinh học"
+        },
+        st: {
+          major: "🎨 SÁNG TẠO",
+          school: "Văn Lang, Kiến trúc, Mỹ thuật CN"
+        }
+      };
+
+      const userName = document.getElementById("nameInput").value.trim() || "Bích Nghi";
+      const { major, school } = result[field];
+
+      const url = `chung-nhan-nganh-full.html?name=${encodeURIComponent(userName)}&major=${encodeURIComponent(major)}&school=${encodeURIComponent(school)}`;
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>

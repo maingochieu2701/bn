@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>⏳ Đếm Ngược Ngày Thi Xong</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to top right, #e0f7fa, #fff3e0);
+      text-align: center;
+      padding: 3rem;
+    }
+    h1 {
+      font-size: 2.2rem;
+      color: #e91e63;
+    }
+    #countdown {
+      font-size: 2rem;
+      margin: 2rem 0;
+      color: #3e2723;
+    }
+    .message {
+      font-size: 1.3rem;
+      color: #00796b;
+    }
+    .confetti {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <h1>⏳ Đếm Ngược Ngày Thi Xong 🎓</h1>
+  <p class="message">Cố lên Bích Nghi! Mỗi giây đều là nỗ lực 💖</p>
+  <div id="countdown">Đang tải...</div>
+  <canvas class="confetti" id="confetti-canvas"></canvas>
+
+  <script>
+    const endDate = new Date("2025-06-28T00:00:00").getTime();
+    const countdownEl = document.getElementById("countdown");
+    const messageEl = document.querySelector(".message");
+
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = endDate - now;
+
+      if (distance <= 0) {
+        clearInterval(timer);
+        countdownEl.textContent = "🎉 Thi xong rồi đó Bích Nghi ơi!";
+        messageEl.textContent = "Bạn đã hoàn thành – giờ là lúc tận hưởng!";
+        startConfetti();
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownEl.textContent = `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
+    }, 1000);
+
+    // Confetti effect
+    function startConfetti() {
+      const confettiSettings = { target: 'confetti-canvas' };
+      const confetti = new ConfettiGenerator(confettiSettings);
+      confetti.render();
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+</body>
+</html>

@@ -2,151 +2,287 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Đếm Ngược Đến Ngày Thi - Bích Nghi</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎓 Đồng hồ đếm ngược Bích Nghi</title>
   <style>
-    body {
+    html, body {
+      margin: 0; padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to top right, #fff1f2, #e1f5fe);
-      text-align: center;
-      padding: 3rem;
-      color: #4e342e;
+      overflow: hidden;
+      height: 100vh;
+      background: radial-gradient(circle at center, #ffe0f0, #e1f5fe);
+      animation: bgPulse 20s infinite;
+    }
+    @keyframes bgPulse {
+      0% { background: radial-gradient(circle, #ffe0f0, #e1f5fe); }
+      50% { background: radial-gradient(circle, #e1f5fe, #ffe0f0); }
+      100% { background: radial-gradient(circle, #ffe0f0, #e1f5fe); }
     }
     h1 {
       color: #d81b60;
-      font-size: 2.2rem;
+      font-size: 2.5rem;
+      margin-top: 2rem;
+      text-align: center;
+      animation: glow 1.5s ease-in-out infinite alternate, shake 5s infinite;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #fff; }
+      to { text-shadow: 0 0 20px #f06292; }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      75% { transform: translateX(3px); }
     }
     #countdown {
-      font-size: 2rem;
-      margin: 2rem 0;
+      font-size: 3rem;
+      font-weight: bold;
       color: #1a237e;
-    }
-    .motivation {
-      font-size: 1.3rem;
-      margin: 1rem auto;
-      padding: 1rem;
-      border-radius: 10px;
-      background: #fce4ec;
-      color: #880e4f;
-      max-width: 600px;
-    }
-    .reminder {
       margin-top: 1rem;
-      font-style: italic;
-      color: #555;
+      background: #ffffffcc;
+      padding: 1rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
     }
-    .quote-img {
-      margin-top: 2rem;
-      max-width: 300px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    #quote {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 10px;
+      width: 80%;
+      margin: 1rem auto;
+      max-width: 600px;
+      animation: floatQuote 3s ease-in-out infinite alternate;
     }
-    .confetti {
+    @keyframes floatQuote {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-6px); opacity: 0.9; }
+    }
+    .bubble {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 9999;
+      width: 40px;
+      height: 40px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: floatBubble 12s linear infinite;
+      opacity: 0.85;
+      transform-origin: center;
+      perspective: 1000px;
     }
+    @keyframes floatBubble {
+      0% {
+        transform: translateY(0) translateX(0) rotate3d(1, 1, 0, 0deg) scale(0.8);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh) translateX(calc(20vw * var(--direction))) rotate3d(1, 1, 0, 360deg) scale(1.2);
+        opacity: 0;
+      }
+    }
+    #sparkle {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .pet {
+      position: fixed;
+      bottom: 10px;
+      left: -100px;
+      width: 80px;
+      height: auto;
+      z-index: 10;
+      animation: runPet 15s linear infinite;
+    }
+    @keyframes runPet {
+      0% { left: -100px; }
+      100% { left: 110vw; }
+    }
+    @keyframes hop {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+.hop {
+  animation: hop 1s ease-in-out infinite;
+}
+
   </style>
 </head>
 <body>
-  <h1>⏳ Đếm Ngược Đến Ngày Thi Bích Nghi</h1>
+  <canvas id="sparkle"></canvas>
+  <h1>⏳ Bích Nghi ơi, còn...</h1>
   <div id="countdown">Đang tải...</div>
-  <div class="motivation" id="motivation">💬 Mỗi ngày là một bước tiến gần hơn đến thành công!</div>
-  <div class="reminder">🕊️ Nhớ ghé mỗi ngày nhé Bích Nghi – luôn có lời chúc mới chờ bạn 💖</div>
- 
+  <div id="quote">Lời động viên sẽ hiện ở đây...</div>
+  <div id="weather" style="text-align:center; font-size: 1rem; margin-top: 5px;">🌦️ Đang tải thời tiết...</div>
+  <img class="pet" src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="pet">
 
-  <canvas class="confetti" id="confetti-canvas"></canvas>
-  <div style="margin-top: 1rem;">
-    <label><input type="checkbox" id="studyCheck"> ✅ Hôm nay mình đã học bài</label>
-  </div>
-  <audio id="thunder" preload="auto" loop>
-    <source src="nguoigieomamxanh" type="audio/mpeg">
-  </audio>
-  <script>
-    setTimeout(() => {
-      const checked = document.getElementById("studyCheck").checked;
-      if (!checked) {
-        document.body.style.background = "radial-gradient(#000000, #3e3e3e)";
-        document.querySelector("h1").textContent = "⚡ Có người chưa học bài đó nha!";
-        document.getElementById("thunder").play();
-        motivationEl.textContent = "Học lẹ đi còn kịp Bích Nghi ơi!";
-        quoteImg.style.display = "none";
-        document.getElementById("countdown").style.color = "#fff";
-      }
-    }, 15000);
-  </script>
-  <audio autoplay loop volume="0.5">
-    <source src="https://cdn.pixabay.com/download/audio/2023/03/16/audio_c5091fe88c.mp3?filename=gentle-melody-14285.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="ding" src="https://cdn.pixabay.com/audio/2022/03/15/audio_bbf13bd2a3.mp3" preload="auto"></audio>
+  <audio id="bubbleSound" src="https://cdn.pixabay.com/download/audio/2022/03/08/audio_671f2f9ee1.mp3" preload="auto"></audio>
+  <audio id="morningSound" src="https://cdn.pixabay.com/download/audio/2022/03/02/audio_1ac9f1b062.mp3" preload="auto"></audio>
 
   <script>
-    const endDate = new Date("2025-06-26T00:00:00").getTime();
     const countdownEl = document.getElementById("countdown");
-    const motivationEl = document.getElementById("motivation");
-    const quoteImg = document.getElementById("quoteImg");
+    const quoteEl = document.getElementById("quote");
+    const ding = document.getElementById("ding");
+    const bubbleSound = document.getElementById("bubbleSound");
+    const morningSound = document.getElementById("morningSound");
+    const sparkleCanvas = document.getElementById("sparkle");
+    const ctx = sparkleCanvas.getContext("2d");
+    sparkleCanvas.width = window.innerWidth;
+    sparkleCanvas.height = window.innerHeight;
 
-    const quotes = {
-      0: "💖 Bích Nghi cố lên! Ngày thi đang đến gần rồi!",
-      1: "🌟 Mỗi nỗ lực hôm nay là tương lai rực rỡ ngày mai!",
-      2: "📖 Kiến thức là hành trang – cố lên bạn ơi!",
-      3: "💪 Đừng sợ thất bại, sợ không dám thử!",
-      4: "🔥 Bạn giỏi hơn bạn nghĩ rất nhiều!",
-      5: "🎯 Đặt mục tiêu – và tiến về phía trước!",
-      6: "🎵 Học cũng có thể chill – giữ tinh thần vui vẻ!"
-    };
+    const examDate = new Date("2025-06-26T07:30:00").getTime();
 
-    const images = {
-      0: "https://i.imgur.com/3RzOqDb.jpg",
-      1: "https://i.imgur.com/YOUZ1Dn.jpg",
-      2: "https://i.imgur.com/q9qCKDp.jpg",
-      3: "https://i.imgur.com/H9OlUSn.jpg",
-      4: "https://i.imgur.com/3YOJ8C9.jpg",
-      5: "https://i.imgur.com/o1gKnMB.jpg",
-      6: "https://i.imgur.com/nN9n0n8.jpg"
-    };
+    let bubbleImgs = [
+      'H4.jpg',
+      'H5.jpg',
+      'H6.gif',
+      'https://media.giphy.com/media/WoWm8YzFQJg5i/giphy.gif'
+    ];
 
-    const today = new Date();
-    const quoteKey = today.getDay();
-    motivationEl.textContent = quotes[quoteKey];
-    const unsplashKeywords = {
-      0: "cute",
-      1: "study-motivation",
-      2: "student-desk",
-      3: "sunlight-desk",
-      4: "notebook",
-      5: "graduation",
-      6: "cozy-study"
-    };
-    quoteImg.src = "https://i.imgur.com/KOoJw9F.png";
-
-    const timer = setInterval(() => {
+    function updateCountdown() {
       const now = new Date().getTime();
-      const distance = endDate - now;
+      const diff = examDate - now;
 
-      if (distance <= 0) {
-        clearInterval(timer);
-        countdownEl.textContent = "🎉 Đến ngày thi rồi – Bích Nghi cố gắng nhé!";
-        motivationEl.textContent = "Chúc bạn thi thật tốt và đạt kết quả tuyệt vời!";
-        startConfetti();
+      const date = new Date();
+      if (date.getMinutes() === 0 && date.getSeconds() === 0) launchConfetti();
+
+      if (diff <= 0) {
+        countdownEl.textContent = "🎉 ĐẾN NGÀY THI RỒI! CHÚC EM TOẢ SÁNG!";
         return;
       }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-      countdownEl.textContent = `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
-    }, 1000);
+      countdownEl.textContent = `${d} ngày ${h} giờ ${m} phút ${s} giây`;
 
-    function startConfetti() {
-      const confettiSettings = { target: 'confetti-canvas' };
-      const confetti = new ConfettiGenerator(confettiSettings);
-      confetti.render();
+      if (d <= 3 && s === 0) ding.play();
+    }
+
+    function typeQuote(text) {
+      quoteEl.textContent = '';
+      let index = 0;
+      const typing = setInterval(() => {
+        quoteEl.textContent += text.charAt(index);
+        index++;
+        if (index >= text.length) clearInterval(typing);
+      }, 50);
+    }
+
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      document.body.style.background = 'linear-gradient(to top, #fff3e0, #ffccbc)';
+      typeQuote("☀️ Chào buổi sáng! Hôm nay sẽ là ngày tuyệt vời đó Bích Nghi!");
+      morningSound.play();
+      speak("Chào buổi sáng! Chúc em một ngày học tập thật hiệu quả!");
+    } else if (hour < 18) {
+      document.body.style.background = 'linear-gradient(to top, #e0f7fa, #b2ebf2)';
+      typeQuote("🌤️ Buổi chiều năng lượng! Ráng thêm chút nữa nhen Bích Nghi!");
+    } else {
+      document.body.style.background = 'linear-gradient(to top, #ede7f6, #d1c4e9)';
+      typeQuote("🌙 Tối rồi! Hít thở nhẹ và ôn lại nhẹ nhàng nhé Bích Nghi!");
+    }
+
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'vi-VN';
+        speechSynthesis.speak(msg);
+      }
+    }
+
+    function addBubble() {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      const img = bubbleImgs[Math.floor(Math.random() * bubbleImgs.length)];
+      bubble.style.left = Math.random() * 100 + 'vw';
+      bubble.style.bottom = '-60px';
+      bubble.style.backgroundImage = `url(${img})`;
+      bubble.style.setProperty('--direction', Math.random() > 0.5 ? 1 : -1);
+      document.body.appendChild(bubble);
+      bubbleSound.currentTime = 0;
+      bubbleSound.play();
+      setTimeout(() => bubble.remove(), 14000);
+    }
+
+    setInterval(updateCountdown, 1000);
+    setInterval(addBubble, 400);
+
+    // Sparkle effect
+    const sparkles = [];
+    for (let i = 0; i < 80; i++) {
+      sparkles.push({
+        x: Math.random() * sparkleCanvas.width,
+        y: Math.random() * sparkleCanvas.height,
+        r: Math.random() * 1.5 + 0.5,
+        dx: Math.random() * 0.5 - 0.25,
+        dy: Math.random() * 0.5 - 0.25,
+        opacity: Math.random() * 0.5 + 0.5
+      });
+    }
+    function drawSparkles() {
+      ctx.clearRect(0, 0, sparkleCanvas.width, sparkleCanvas.height);
+      for (let s of sparkles) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity})`;
+        ctx.fill();
+        s.x += s.dx;
+        s.y += s.dy;
+        s.opacity += (Math.random() - 0.5) * 0.05;
+        if (s.opacity < 0.3) s.opacity = 0.3;
+        if (s.opacity > 0.8) s.opacity = 0.8;
+        if (s.x < 0) s.x = sparkleCanvas.width;
+        if (s.x > sparkleCanvas.width) s.x = 0;
+        if (s.y < 0) s.y = sparkleCanvas.height;
+        if (s.y > sparkleCanvas.height) s.y = 0;
+      }
+      requestAnimationFrame(drawSparkles);
+    }
+    drawSparkles();
+
+    // Thời tiết theo thời gian thực
+    function showWeather() {
+      fetch('https://api.openweathermap.org/data/2.5/weather?q=Hanoi,vn&units=metric&appid=5425a3b9a8c27cfe052015417bea9284&lang=vi')
+        .then(res => res.json())
+        .then(data => {
+          const temp = data.main.temp.toFixed(1);
+          const desc = data.weather[0].description;
+          document.getElementById('weather').innerHTML = `🌤️ Thời tiết Hà Nội: ${desc}, ${temp}°C`;
+        })
+        .catch(() => {
+          document.getElementById('weather').innerHTML = 'Không thể tải thời tiết';
+        });
+    }
+    showWeather();
+
+    function launchConfetti() {
+      const confetti = document.createElement("div");
+      confetti.innerText = "🎊";
+      confetti.style.position = "fixed";
+      confetti.style.top = Math.random() * window.innerHeight + "px";
+      confetti.style.left = Math.random() * window.innerWidth + "px";
+      confetti.style.fontSize = "30px";
+      confetti.style.zIndex = "10";
+      confetti.style.animation = "confettiFall 3s ease-out forwards";
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 3000);
     }
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+  <img class="pet" src="SWEET HOUSE.gif" alt="pet1">
+  <img class="pet" src="H2.gif" style="animation-delay: 5s;" alt="pet2">
+  <img class="pet" src="H3.jpg" style="animation-delay: 10s;" alt="pet3">
 </body>
 </html>

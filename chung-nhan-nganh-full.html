@@ -55,7 +55,23 @@
       font-size: 1rem;
       color: #888;
     }
-  </style>
+  .signature-area {
+  margin-top: 40px;
+  text-align: center;
+}
+canvas#signature {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 10px;
+  touch-action: none;
+  background: #fffef9;
+}
+.signature-label {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #333;
+}
+</style>
 </head>
 <body>
   <div class="certificate">
@@ -67,6 +83,10 @@
     <p>và nên theo học tại</p>
     <div class="school" id="school">Đại học Kinh tế Quốc dân</div>
     <div class="stamp">🎓 Được chứng nhận bởi bạn bè lớp 12C1</div>
+    <div class="signature-area">
+      <div class="signature-label">✍️ Ký tên xác nhận:</div>
+      <canvas id="signature" width="300" height="100"></canvas>
+    </div>
   </div>
 
   <script>
@@ -78,6 +98,47 @@
     document.getElementById("name").textContent = name;
     document.getElementById("major").textContent = major;
     document.getElementById("school").textContent = school;
-  </script>
+  // Chữ ký đơn giản bằng canvas
+    const canvas = document.getElementById('signature');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    canvas.addEventListener('mousedown', (e) => {
+      drawing = true;
+      ctx.beginPath();
+      ctx.moveTo(e.offsetX, e.offsetY);
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (drawing) {
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseleave', () => drawing = false);
+
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      ctx.beginPath();
+      ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+      drawing = true;
+    });
+
+    canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (drawing) {
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+        ctx.stroke();
+      }
+    });
+
+    canvas.addEventListener('touchend', () => drawing = false);
+</script>
 </body>
 </html>

@@ -2,160 +2,294 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Sổ Lưu Bút Viền Hoa</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sổ lưu bút - Nhật ký Bích Nghi 📖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
   <style>
     body {
-      background-image: repeating-linear-gradient(
-        to bottom,
-        #fff,
-        #fff 28px,
-        #d0e7ff 29px
-      );
-      font-family: 'Segoe UI', sans-serif;
-      padding: 2rem;
-      color: #4e342e;
+      margin: 0;
+      background: url('https://i.imgur.com/xQF6mfW.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Indie Flower', cursive;
+      overflow: hidden;
+    }
+    #flipbook {
+      width: 600px;
+      height: 400px;
+      margin: 60px auto;
+    }
+    .page {
+      background: #fff8e1;
+      padding: 20px;
+      font-size: 1.3rem;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      overflow-y: auto;
+      position: relative;
+    }
+    #form-container {
       text-align: center;
-      background-color: #fff0f5;
-      border: 20px solid transparent;
-      border-image: url('https://i.imgur.com/K44qrsK.png') 30 round;
-    }
-    h1 {
-      color: #c2185b;
-      margin-bottom: 1rem;
-    }
-    textarea, input {
-      width: 90%;
-      max-width: 500px;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      background-color: rgba(255,255,255,0.95);
-    }
-    button {
-      padding: 10px 18px;
-      font-size: 1rem;
-      background: #f06292;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
       margin-top: 10px;
     }
-    .entry {
-      background: rgba(255,255,255,0.95);
-      border-left: 5px solid #ec407a;
-      padding: 1rem;
-      margin: 1rem auto;
-      border-radius: 8px;
-      max-width: 600px;
-      text-align: left;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    input, textarea, button {
+      font-family: 'Indie Flower', cursive;
+      padding: 8px;
+      margin: 4px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
-    .entry .name {
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: #d81b60;
+    button {
+      background: #ffb3c1;
+      border: none;
+      cursor: pointer;
     }
-    .entry .message {
-      margin-top: 6px;
-      white-space: pre-wrap;
+    button:hover {
+      background: #ff94a2;
     }
-    .entry .signature {
-      margin-top: 8px;
-      font-family: 'Brush Script MT', cursive;
-      font-size: 1.2rem;
-      text-align: right;
-      color: #5d4037;
+    .sigblock {
+      margin-top: 15px;
     }
-  </style>
+    canvas {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: block;
+      margin: 8px auto 0 auto;
+      background: #fff;
+    }
+    small {
+      color: #999;
+    }
+  
+<style>
+  #flipbook {
+    background: #fef9e7;
+    box-shadow: 0 0 0 5px #fce4b3, 0 0 20px rgba(0,0,0,0.2);
+    border-radius: 6px;
+  }
+  .page {
+    font-family: 'Patrick Hand', cursive;
+    background: repeating-linear-gradient(
+      to bottom,
+      #fffde7,
+      #fffde7 28px,
+      #fce4b3 28px,
+      #fce4b3 29px
+    );
+    padding: 25px;
+    line-height: 28px;
+    box-sizing: border-box;
+    border-left: 4px solid #ef9a9a;
+  }
+</style>
+
+</style>
+
+<style>
+  #cover.opening {
+    animation: slideCover 1s forwards ease-in-out;
+  }
+  @keyframes slideCover {
+    0% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(100%) scale(1.1); opacity: 0; }
+  }
+
+<style>
+  #flipbook {
+    background: #fef9e7;
+    box-shadow: 0 0 0 5px #fce4b3, 0 0 20px rgba(0,0,0,0.2);
+    border-radius: 6px;
+  }
+  .page {
+    font-family: 'Patrick Hand', cursive;
+    background: repeating-linear-gradient(
+      to bottom,
+      #fffde7,
+      #fffde7 28px,
+      #fce4b3 28px,
+      #fce4b3 29px
+    );
+    padding: 25px;
+    line-height: 28px;
+    box-sizing: border-box;
+    border-left: 4px solid #ef9a9a;
+  }
+</style>
+
+</style>
 </head>
 <body>
-  <h1>📖 Sổ Lưu Bút Dành Cho Bích Nghi 🌸</h1>
-  <p>Viết vài dòng thật tâm, ký tên và lưu lại kỷ niệm nhé! 💖</p>
 
-  <input id="name" placeholder="Tên bạn" />
-  <textarea id="message" rows="4" placeholder="Lời chúc gửi Bích Nghi..."></textarea>
-  <input id="signature" placeholder="Chữ ký (tuỳ chọn)" />
-  <br>
-  <button onclick="addEntry()">📩 Gửi lời chúc</button>
+<audio id="flipSound" src="https://www.soundjay.com/misc/page-turn-8.mp3" preload="auto"></audio>
+<audio autoplay loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_d9426cf955.mp3" type="audio/mpeg">
+</audio>
 
-  <div id="entries"></div>
 
-  <script>
-    const entriesDiv = document.getElementById("entries");
+<!-- Cover Page -->
+<div id="cover" style="position:fixed;inset:0;background:linear-gradient(135deg,#ffecd2,#fcb69f);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;">
+  <h1 style="font-size:2.5rem;margin-bottom:1rem;font-family:'Indie Flower',cursive;">📘 Sổ lưu bút của ai?</h1>
+  <input id="ownerInput" placeholder="Nhập tên của bạn" style="font-family:'Indie Flower';padding:10px;font-size:1.2rem;border-radius:8px;border:1px solid #ccc;margin-bottom:1rem;" />
+  <button onclick="startDiary()" style="font-size:1.1rem;padding:10px 20px;border:none;border-radius:8px;background:#ff9a8b;color:white;font-family:'Indie Flower';cursor:pointer;">Vào sổ lưu bút</button>
+</div>
 
-    function addEntry() {
-      const name = document.getElementById("name").value.trim();
-      const msg = document.getElementById("message").value.trim();
-      const sign = document.getElementById("signature").value.trim();
+<div id="flipbook"></div>
 
-      if (!name || !msg) {
-        alert("Hãy nhập tên và lời chúc trước khi gửi nhé!");
-        return;
+<div id="form-container">
+  <input type="text" id="name" placeholder="Tên bạn" />
+  <textarea id="message" placeholder="Lời chúc hoặc kỷ niệm..." rows="2" cols="30"></textarea><br>
+  <canvas id="sigCanvas" width="250" height="60"></canvas><br>
+  <button onclick="addPage()">✍️ Gửi lời chúc</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js">
+// Trang bìa tên chủ sổ
+function startDiary() {
+  const name = document.getElementById("ownerInput").value.trim();
+  if (!name) return alert("Bạn chưa nhập tên của mình!");
+  localStorage.setItem("diaryOwner", name);
+  document.getElementById("cover").classList.add("opening"); setTimeout(() => document.getElementById("cover").style.display = "none", 1000);
+}
+
+window.addEventListener("load", () => {
+  const owner = localStorage.getItem("diaryOwner");
+  if (owner) {
+    document.getElementById("cover").classList.add("opening"); setTimeout(() => document.getElementById("cover").style.display = "none", 1000);
+    const welcome = document.createElement("div");
+    welcome.className = "page";
+    welcome.innerHTML = `📔 Đây là sổ lưu bút của <strong>${owner}</strong><br><br>Hãy cùng viết những dòng kỷ niệm thật đẹp nhé!`;
+    flipbook.prepend(welcome);
+  }
+});
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js">
+// Trang bìa tên chủ sổ
+function startDiary() {
+  const name = document.getElementById("ownerInput").value.trim();
+  if (!name) return alert("Bạn chưa nhập tên của mình!");
+  localStorage.setItem("diaryOwner", name);
+  document.getElementById("cover").classList.add("opening"); setTimeout(() => document.getElementById("cover").style.display = "none", 1000);
+}
+
+window.addEventListener("load", () => {
+  const owner = localStorage.getItem("diaryOwner");
+  if (owner) {
+    document.getElementById("cover").classList.add("opening"); setTimeout(() => document.getElementById("cover").style.display = "none", 1000);
+    const welcome = document.createElement("div");
+    welcome.className = "page";
+    welcome.innerHTML = `📔 Đây là sổ lưu bút của <strong>${owner}</strong><br><br>Hãy cùng viết những dòng kỷ niệm thật đẹp nhé!`;
+    flipbook.prepend(welcome);
+  }
+});
+
+</script>
+<script>
+  const flipbook = document.getElementById('flipbook');
+  const flipSound = document.getElementById('flipSound');
+  const sigCanvas = document.getElementById('sigCanvas');
+  const ctx = sigCanvas.getContext('2d');
+  let drawing = false;
+
+  sigCanvas.addEventListener('mousedown', e => {
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+  });
+  sigCanvas.addEventListener('mousemove', e => {
+    if (drawing) {
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+    }
+  });
+  sigCanvas.addEventListener('mouseup', () => drawing = false);
+  sigCanvas.addEventListener('mouseleave', () => drawing = false);
+
+  // Touch support
+  sigCanvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const rect = sigCanvas.getBoundingClientRect();
+    ctx.beginPath();
+    ctx.moveTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
+    drawing = true;
+  });
+  sigCanvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const rect = sigCanvas.getBoundingClientRect();
+    if (drawing) {
+      ctx.lineTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
+      ctx.stroke();
+    }
+  });
+  sigCanvas.addEventListener('touchend', () => drawing = false);
+
+  let saved = JSON.parse(localStorage.getItem('pages') || '[]');
+  let currentPages = [...saved];
+
+  function renderPages() {
+    flipbook.innerHTML = '';
+    if (currentPages.length === 0) {
+      flipbook.innerHTML = '<div class="page">🌸 Chào mừng đến với sổ lưu bút của Bích Nghi!<br><br>Hãy là người đầu tiên để lại lời nhắn nhé!</div>';
+    } else {
+      currentPages.forEach((p) => {
+        const div = document.createElement('div');
+        div.className = 'page';
+        div.innerHTML = `<strong>${p.name}</strong>: ${p.msg}<br><small>🕒 ${p.time}</small><div class="sigblock"><img src="${p.sig}" width="180"/><br><small>✍️ ${p.name} tự ký</small></div>`;
+        flipbook.appendChild(div);
+      });
+    }
+    $('#flipbook').turn({
+      width: 600,
+      height: 400,
+      autoCenter: true,
+      gradients: true,
+      when: {
+        turning: () => flipSound.play()
       }
+    });
+  }
 
-      const entry = {
-        name,
-        msg,
-        sign,
-        time: new Date().toLocaleString()
-      };
+  function addPage() {
+    const name = document.getElementById('name').value.trim();
+    const msg = document.getElementById('message').value.trim();
+    if (!name || !msg) return alert("Điền đầy đủ tên và lời chúc!");
 
-      const list = JSON.parse(localStorage.getItem("guestbookFlower") || "[]");
-      list.push(entry);
-      localStorage.setItem("guestbookFlower", JSON.stringify(list));
-      renderEntries();
-      document.getElementById("name").value = "";
-      document.getElementById("message").value = "";
-      document.getElementById("signature").value = "";
-    }
+    const sigData = sigCanvas.toDataURL();
+    const now = new Date();
+    const entry = {
+      name,
+      msg,
+      time: now.toLocaleString('vi-VN'),
+      sig: sigData
+    };
 
-    function renderEntries() {
-      const list = JSON.parse(localStorage.getItem("guestbookFlower") || "[]").reverse();
-      entriesDiv.innerHTML = list.map(e => `
-        <div class="entry">
-          <div class="name">👤 ${e.name} <span style="float:right;font-size:0.8rem;">${e.time}</span></div>
-          <div class="message">${e.msg}</div>
-          ${e.sign ? `<div class="signature">~ ${e.sign}</div>` : ""}
-        </div>
-      `).join("");
-    }
+    currentPages.push(entry);
+    localStorage.setItem('pages', JSON.stringify(currentPages));
+    document.getElementById('message').value = '';
+    ctx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+    renderPages();
+  }
 
-    renderEntries();
-  </script>
+  renderPages();
 
-  <audio id="sound" preload="auto">
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_bbf13bd2a3.mp3?filename=success-1-6297.mp3" type="audio/mpeg">
-  </audio>
-  <script>
-    const sound = document.getElementById("sound");
-    function addEntry() {
-      const name = document.getElementById("name").value.trim();
-      const msg = document.getElementById("message").value.trim();
-      const sign = document.getElementById("signature").value.trim();
-      if (!name || !msg) {
-        alert("Hãy nhập tên và lời chúc trước khi gửi nhé!");
-        return;
-      }
-      const entry = {
-        name,
-        msg,
-        sign,
-        time: new Date().toLocaleString()
-      };
-      const list = JSON.parse(localStorage.getItem("guestbookFlower") || "[]");
-      list.push(entry);
-      localStorage.setItem("guestbookFlower", JSON.stringify(list));
-      renderEntries();
-      document.getElementById("name").value = "";
-      document.getElementById("message").value = "";
-      document.getElementById("signature").value = "";
-      sound.play();
-    }
-  </script>
+// Trang bìa tên chủ sổ
+function startDiary() {
+  const name = document.getElementById("ownerInput").value.trim();
+  if (!name) return alert("Bạn chưa nhập tên của mình!");
+  localStorage.setItem("diaryOwner", name);
+  document.getElementById("cover").classList.add("opening"); setTimeout(() => document.getElementById("cover").style.display = "none", 1000);
+}
+
+window.addEventListener("load", () => {
+  const owner = localStorage.getItem("diaryOwner");
+  if (owner) {
+    document.getElementById("cover").classList.add("opening"); setTimeout(() => document.getElementById("cover").style.display = "none", 1000);
+    const welcome = document.createElement("div");
+    welcome.className = "page";
+    welcome.innerHTML = `📔 Đây là sổ lưu bút của <strong>${owner}</strong><br><br>Hãy cùng viết những dòng kỷ niệm thật đẹp nhé!`;
+    flipbook.prepend(welcome);
+  }
+});
+
+</script>
 </body>
-</html>
 </html>

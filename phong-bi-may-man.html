@@ -7,7 +7,11 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to top right, #fff1eb, #ace0f9);
+      background: linear-gradient(to top right, hsl(312, 93%, 43%), #ace0f9);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       text-align: center;
       padding: 2rem;
       color: #333;
@@ -15,6 +19,10 @@
     h1 {
       color: #e91e63;
       margin-bottom: 1rem;
+    }
+    h1:hover {
+      color: #d81b60;
+      text-shadow: 2px 2px 2px hsl(355, 96%, 46%);
     }
     .envelope {
       width: 180px;
@@ -61,9 +69,38 @@
       font-size: 0.9rem;
       color: #555;
     }
+    .envelope.opened {
+  animation: openAnim 0.5s ease forwards;
+}
+
+@keyframes openAnim {
+  0% { transform: rotateX(0deg); }
+  100% { transform: rotateX(180deg); }
+}
+
+#message.show {
+  animation: revealMsg 0.6s ease forwards;
+  opacity: 0;
+}
+
+@keyframes revealMsg {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
   </style>
 </head>
 <body>
+  <audio autoplay loop>
+    <source src="nhanduyen.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
   <h1>📮 Phong Bì May Mắn</h1>
   <p>Click vào phong bì để nhận một lời chúc thi tốt 💌</p>
   <div class="envelope" onclick="openEnvelope()"></div>
@@ -81,13 +118,44 @@
       "Chúc Bích Nghi ngủ ngon, mơ đề dễ, làm bài siêu 💤",
       "Bạn là tia sáng nhỏ bé nhưng rực rỡ nhất mùa thi này!",
       "Không có áp lực nào lớn hơn trái tim muốn cố gắng! ❤️",
-      "Điểm cao chỉ là con số – bạn mới là điều tuyệt vời nhất!"
+      "Điểm cao chỉ là con số – em mới là điều tuyệt vời nhất!",
+      "Mỗi câu hỏi là một cơ hội – hãy nắm bắt nó! 🌟",
+      "Chúc Bích Nghi luôn giữ vững tinh thần lạc quan và yêu đời!",
+      "Em đã chuẩn bị kỹ lưỡng, giờ chỉ cần tự tin và tỏa sáng! 🌈",
+      "Hãy nhớ, dù kết quả thế nào, tụi mình vẫn tự hào về em! 💪",
+      "Chúc Bích Nghi có một kỳ thi thành công rực rỡ! 🎉",
+      "Mỗi ngày là một cơ hội mới – hãy làm cho nó đặc biệt! 🌼",
+      "Em là người duy nhất có thể viết nên câu chuyện của mình – hãy làm cho nó tuyệt vời! 📖",
+      "Chúc Bích Nghi luôn giữ vững niềm tin và quyết tâm! 🌟",
+      "Hãy nhớ rằng, mỗi bước đi của em đều dẫn đến thành công! 🚀",
+      "Chúc Bích Nghi có một kỳ thi đầy niềm vui và hạnh phúc! 😊",
+
+      "Em là người duy nhất có thể làm cho giấc mơ của mình trở thành hiện thực – hãy tin vào bản thân! 🌈",
+      "Chúc Bích Nghi luôn giữ vững tinh thần lạc quan và yêu đời! 🌻",
+      "Hãy nhớ rằng, mỗi ngày là một cơ hội mới để em tỏa sáng! ✨",
+      "Chúc Bích Nghi có một kỳ thi thành công và đáng nhớ! 🎓",
+      "Em là người duy nhất có thể viết nên câu chuyện của mình – hãy làm cho nó tuyệt vời! 📚",
+      "Chúc Bích Nghi luôn giữ vững niềm tin và quyết tâm! 💖",
+      "Hãy nhớ rằng, mỗi bước đi của em đều dẫn đến thành công! 🚀",
+      "Chúc Bích Nghi có một kỳ thi đầy niềm vui và hạnh phúc! 😊",
+      "nic"
+
     ];
 
     function openEnvelope() {
-      const msg = messages[Math.floor(Math.random() * messages.length)];
-      document.getElementById("message").textContent = msg;
-    }
+  const envelope = document.querySelector(".envelope");
+  const messageBox = document.getElementById("message");
+
+  envelope.classList.add("opened");
+  const msg = messages[Math.floor(Math.random() * messages.length)];
+  messageBox.textContent = msg;
+  messageBox.classList.add("show");
+
+  // Optional: Play sound
+  const audio = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_bbf13bd2a3.mp3");
+  audio.play();
+}
+
   </script>
 </body>
 </html>

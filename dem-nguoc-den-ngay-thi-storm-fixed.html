@@ -25,6 +25,10 @@
       text-align: center;
       animation: glow 1.5s ease-in-out infinite alternate, shake 5s infinite;
     }
+    h1:hover {
+      animation: glow 1.5s ease-in-out infinite alternate, shake 0.5s infinite;
+      text-shadow: 5px 5px 1px hsl(114, 86%, 45%), -15px -15px 1px #f06292, 10px 10px 1px hsl(195, 94%, 46%);
+    }
     @keyframes glow {
       from { text-shadow: 0 0 5px #fff; }
       to { text-shadow: 0 0 20px #f06292; }

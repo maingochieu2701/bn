@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giấy Chứng Nhận Ngành Phù Hợp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #fefcf3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+    .certificate {
+      width: 100%;
+      max-width: 700px;
+      border: 10px solid #d4af37;
+      padding: 40px;
+      background: #fffdf5;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+      border-radius: 15px;
+    }
+    .certificate h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      margin-bottom: 0.2em;
+      color: #b8860b;
+    }
+    .certificate p {
+      font-size: 1.2rem;
+      margin: 1em 0;
+    }
+    .name {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2e7d32;
+    }
+    .major {
+      font-size: 1.5rem;
+      color: #1976d2;
+    }
+    .school {
+      font-size: 1.3rem;
+      font-style: italic;
+      color: #6a1b9a;
+    }
+    .stamp {
+      margin-top: 40px;
+      font-size: 1rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="certificate">
+    <h1>Giấy Chứng Nhận</h1>
+    <p>Trang trọng chứng nhận rằng</p>
+    <div class="name" id="name">Bích Nghi</div>
+    <p>rất phù hợp với ngành</p>
+    <div class="major" id="major">Kinh tế - Quản trị</div>
+    <p>và nên theo học tại</p>
+    <div class="school" id="school">Đại học Kinh tế Quốc dân</div>
+    <div class="stamp">🎓 Được chứng nhận bởi bạn bè lớp 12C1</div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const name = decodeURIComponent(params.get('name') || 'Bích Nghi');
+    const major = decodeURIComponent(params.get('major') || 'Ngành phù hợp');
+    const school = decodeURIComponent(params.get('school') || 'Trường phù hợp');
+
+    document.getElementById("name").textContent = name;
+    document.getElementById("major").textContent = major;
+    document.getElementById("school").textContent = school;
+  </script>
+</body>
+</html>

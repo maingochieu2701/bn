@@ -54,6 +54,17 @@
   </style>
 </head>
 <body>
+  <audio id="bgm" autoplay loop>
+  <source src="kay.mp3" type="audio/mpeg">
+</audio>
+<script>
+  // Gỡ muted khi người dùng chạm màn hình
+  document.addEventListener('touchstart', function () {
+    const bgm = document.getElementById('bgm');
+    bgm.muted = false;
+    bgm.play();
+  }, { once: true });
+</script>
   <h1>🧠 Quiz: Bạn Hợp Ngành Gì?</h1>
 
   <div style="text-align:center;">

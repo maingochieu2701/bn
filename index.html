@@ -13,6 +13,8 @@
       background-image: url('gen-h-h10.jpg');
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
     h1 {
       color: #d81b60;
@@ -42,10 +44,18 @@
   </style>
 </head>
 <body>
-  <audio autoplay loop>
-    <source src="dg.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <audio id="bgm" autoplay loop>
+  <source src="dg.mp3" type="audio/mpeg">
+</audio>
+<script>
+  // Gỡ muted khi người dùng chạm màn hình
+  document.addEventListener('touchstart', function () {
+    const bgm = document.getElementById('bgm');
+    bgm.muted = false;
+    bgm.play();
+  }, { once: true });
+</script>
+
   <h1>📚 Góc .....</h1>
   <ul>
     <li><a href="dem-nguoc-den-ngay-thi-storm-fixed.html">⏳ Đếm ngược ngày thi</a></li>
